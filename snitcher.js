@@ -4,7 +4,7 @@
 // @version      1.0.2
 // @description  Enhanced location finder with timezone and regional information
 // @author       Westagger
-// @license      MIT
+// @license      GNU GPLv3
 // @match        https://openguessr.com/*
 // @grant        GM_xmlhttpRequest
 // @icon         https://raw.githubusercontent.com/Westagger/OpenSnitch-Pro/refs/heads/main/assets/osp-logo.png
