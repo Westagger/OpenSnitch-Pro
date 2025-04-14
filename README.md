@@ -31,11 +31,6 @@ A powerful userscript that enhances OpenGuessr with real-time location informati
 4. Click the minimize button (-) to collapse the interface
 5. Click the Google Maps button to view the location in Google Maps
 
-## Updates
-
-The script automatically checks for updates. Latest version: 1.0.2
-- Last modified: 2025-04-14
-
 ## Support
 
 If you encounter any issues or have suggestions:
