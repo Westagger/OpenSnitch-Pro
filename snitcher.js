@@ -7,7 +7,7 @@
 // @license      MIT
 // @match        https://openguessr.com/*
 // @grant        GM_xmlhttpRequest
-// @icon         ttps://github.com/Westagger/OpenSnitch-Pro/
+// @icon         https://raw.githubusercontent.com/Westagger/OpenSnitch-Pro/refs/heads/main/assets/osp-logo.png
 // @supportURL   https://github.com/Westagger/OpenSnitch-Pro/issues
 // @downloadURL https://github.com/Westagger/OpenSnitch-Pro/blob/main/snitcher.js
 // @updateURL https://update.greasyfork.org/scripts/532833/OpenSnitch%20Pro.user.js
