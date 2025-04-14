@@ -20,7 +20,7 @@ A powerful userscript that enhances OpenGuessr with real-time location informati
    - [Greasemonkey](https://www.greasespot.net/)
 
 2. Install OpenSnitch Pro:
-   - Click [here](https://greasyfork.org/en/) to install
+   - Click [here](https://greasyfork.org/en/scripts/532833-opensnitch-pro) to install
    - Or create a new userscript and paste the code from `snitcher.js`
 
 ## Usage
