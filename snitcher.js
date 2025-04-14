@@ -7,10 +7,10 @@
 // @license      MIT
 // @match        https://openguessr.com/*
 // @grant        GM_xmlhttpRequest
-// @icon         ttps://github.com/Westagger/OpenSnitcher-Pro/
-// @supportURL   https://github.com/Westagger/OpenSnitcher-Pro/issues
-// @downloadURL https://update.greasyfork.org/scripts/
-// @updateURL https://update.greasyfork.org/scripts/
+// @icon         ttps://github.com/Westagger/OpenSnitch-Pro/
+// @supportURL   https://github.com/Westagger/OpenSnitch-Pro/issues
+// @downloadURL https://github.com/Westagger/OpenSnitch-Pro/blob/main/snitcher.js
+// @updateURL https://update.greasyfork.org/scripts/532833/OpenSnitch%20Pro.user.js
 // ==/UserScript==
 
 (function () {

@@ -39,7 +39,7 @@ The script automatically checks for updates. Latest version: 1.0.2
 ## Support
 
 If you encounter any issues or have suggestions:
-1. Open an issue on [GitHub](https://github.com/Westagger/OpenSnitch-Pro/issues)
+1. Open an issue on [the issue page](https://github.com/Westagger/OpenSnitch-Pro/issues)
 2. Include your browser version and userscript manager
 3. Provide steps to reproduce the issue
 
