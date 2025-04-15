@@ -252,12 +252,13 @@
         return nameMap[countryName] || countryName;
     }
 
-        async function getTimeZoneInfo(lat, lng) {
+    async function getTimeZoneInfo(lat, lng) {
         const timezoneApis = [
             // TimeDB API
             async () => {
                 const response = await fetch(`https://timedb.io/api/TimeZone?lat=${lat}&lng=${lng}`);
                 const data = await response.json();
+                if (!data.timezone) throw new Error('No timezone data');
                 return {
                     timeZone: data.timezone,
                     localTime: new Date().toLocaleString('en-US', {
@@ -266,65 +267,79 @@
                     })
                 };
             },
-            // Google Time Zone API
+            // TimeZoneDB API
             async () => {
-                const response = await fetch(`https://timezone.abstractapi.com/v1/current_time/?api_key=YOUR_API_KEY&location=${lat},${lng}`);
+                const response = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=YOUR_API_KEY&format=json&by=position&lat=${lat}&lng=${lng}`);
                 const data = await response.json();
+                if (data.status !== 'OK') throw new Error('Invalid timezone response');
                 return {
-                    timeZone: data.timezone_name,
-                    localTime: data.datetime
+                    timeZone: data.zoneName,
+                    localTime: new Date(data.formatted).toLocaleString('en-US', {
+                        timeZone: data.zoneName,
+                        hour12: false
+                    })
                 };
             },
-            // TimeAPI.io (as backup)
+            // GeoNames API
             async () => {
-                const response = await fetch(`https://timeapi.io/api/Time/current/coordinate?latitude=${lat}&longitude=${lng}`);
+                const response = await fetch(`http://api.geonames.org/timezoneJSON?lat=${lat}&lng=${lng}&username=YOUR_USERNAME`);
                 const data = await response.json();
+                if (!data.timezoneId) throw new Error('No timezone data');
                 return {
-                    timeZone: data.timeZone,
-                    localTime: new Date(data.dateTime).toLocaleString('en-US', {
-                        timeZone: data.timeZone,
+                    timeZone: data.timezoneId,
+                    localTime: new Date().toLocaleString('en-US', {
+                        timeZone: data.timezoneId,
                         hour12: false
                     })
                 };
             }
         ];
 
-        try {
-            // timeout API call
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Timeout')), 3000)
-            );
-
-            // API race
-            const result = await Promise.race([
-                ...timezoneApis.map(api => api()),
-                timeoutPromise
-            ]);
-
-            return result;
-        } catch (error) {
-            console.error('[OpenSnitch Pro] Timezone API error:', error);
-            
-            // Fallback calculation
+        let lastError = null;
+        for (const api of timezoneApis) {
             try {
-                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                return {
-                    timeZone: timezone,
-                    localTime: new Date().toLocaleString('en-US', {
-                        timeZone: timezone,
-                        hour12: false
-                    })
-                };
-            } catch (fallbackError) {
-                console.error('[OpenSnitch Pro] Fallback timezone error:', fallbackError);
-                return {
-                    timeZone: 'UTC',
-                    localTime: new Date().toLocaleString('en-US', {
-                        timeZone: 'UTC',
-                        hour12: false
-                    })
-                };
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Timeout')), 3000)
+                );
+
+                const result = await Promise.race([
+                    api(),
+                    timeoutPromise
+                ]);
+
+                if (result && result.timeZone) {
+                    return result;
+                }
+            } catch (error) {
+                console.error('[OpenSnitch Pro] API attempt failed:', error);
+                lastError = error;
+                continue;
             }
+        }
+
+        // If APIs fail, use approximate calculation
+        try {
+            const tzOffset = -(new Date().getTimezoneOffset() / 60);
+            const approximateOffset = Math.round(lng / 15);
+            const hourOffset = approximateOffset;
+            
+            const timezone = `Etc/GMT${hourOffset >= 0 ? '-' : '+'}${Math.abs(hourOffset)}`;
+            return {
+                timeZone: timezone,
+                localTime: new Date().toLocaleString('en-US', {
+                    timeZone: timezone,
+                    hour12: false
+                })
+            };
+        } catch (error) {
+            console.error('[OpenSnitch Pro] Timezone approximation failed:', error);
+            return {
+                timeZone: 'UTC',
+                localTime: new Date().toLocaleString('en-US', {
+                    timeZone: 'UTC',
+                    hour12: false
+                })
+            };
         }
     }
 
