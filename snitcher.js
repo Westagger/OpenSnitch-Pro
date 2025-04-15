@@ -418,11 +418,11 @@
         contentDiv.style.cssText = 'display: flex; flex-direction: column; gap: 10px;';
 
         const sections = [
-            { label: 'Time Zone', value: `${timeZoneInfo.timeZone}\n${timeZoneInfo.localTime}` },
             { label: 'Country', value: locationDetails.country },
             { label: 'Region', value: locationDetails.location },
             { label: 'State', value: locationDetails.state },
-            { label: 'City', value: locationDetails.city }
+            { label: 'City', value: locationDetails.city },
+            { label: 'Time Zone (≈)', value: `${timeZoneInfo.timeZone}\n${timeZoneInfo.localTime}` }
         ];
 
         sections.forEach(section => {
